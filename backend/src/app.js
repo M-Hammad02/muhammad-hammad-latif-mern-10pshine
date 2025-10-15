@@ -5,8 +5,8 @@ const cors = require('cors');
 const pino = require('pino');
 const pinoHttp = require('pino-http');
 const bodyParser = require('body-parser');
-const authRoutes = require('./routes/auth');
-const noteRoutes = require('./routes/notes');
+//const authRoutes = require('./routes/auth');
+//const noteRoutes = require('./routes/notes');
 const userRoutes = require('./routes/user');
 const errorHandler = require('./middlewares/errorHandler');
 const logger = pino({ level: process.env.NODE_ENV === 'production' ? 'info' :
@@ -18,8 +18,8 @@ app.use(pinoHttp({ logger }));
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 // routes
-app.use('/api/auth', authRoutes);
-app.use('/api/notes', noteRoutes);
+//app.use('/api/auth', authRoutes);
+//app.use('/api/notes', noteRoutes);
 app.use('/api/users', userRoutes);
 app.get('/', (req, res) => {
   res.send('✅ Server is running fine');
