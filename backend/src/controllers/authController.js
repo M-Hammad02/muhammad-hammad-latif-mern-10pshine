@@ -5,7 +5,6 @@ const { sendResetEmail } = require("../services/emailService");
 const Sequelize = require("sequelize");
 const jwt = require('jsonwebtoken');
 const User = require('../models/User'); 
-const Folder = require("../models/Folder");
 
 // register 
 exports.register = async (req, res) => {
