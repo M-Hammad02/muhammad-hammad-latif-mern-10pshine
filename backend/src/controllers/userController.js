@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const  User  = require('../models/User');
 
+// register the user
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -21,6 +22,7 @@ exports.register = async (req, res) => {
   }
 };
 
+// login the user
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -39,30 +41,69 @@ exports.login = async (req, res) => {
   }
 };
 
+// Get user profile
 exports.getProfile = async (req, res) => {
   try {
-    const user = await User.findByPk(req.user.id, { attributes: ['id', 'name', 'email'] });
+    const user = await User.findByPk(req.user.id, {
+      attributes: ['id', 'name', 'email', 'avatar', 'bio'], // ✅ include these
+    });
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.json(user);
   } catch (err) {
-    req.log.error(err);
+    console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
 };
 
+// update user profile
 exports.updateProfile = async (req, res) => {
   try {
+    console.log("🟢 Update profile body:", req.body);
     const user = await User.findByPk(req.user.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-    const { name, email } = req.body;
+    const { name, email, avatar, bio } = req.body;
+    console.log("🟢 Before update:", { name, email, avatar: avatar?.slice(0, 30), bio });
+
     if (name) user.name = name;
     if (email) user.email = email;
+    if (avatar) user.avatar = avatar;
+    if (bio) user.bio = bio;
+
     await user.save();
 
-    res.json({ message: 'Profile updated', user: { id: user.id, name: user.name, email: user.email } });
+    res.json({
+      message: "Profile updated",
+      user: { id: user.id, name: user.name, email: user.email, avatar: user.avatar, bio: user.bio },
+    });
   } catch (err) {
-    req.log.error(err);
-    res.status(500).json({ message: 'Server error' });
+    console.error("🔴 updateProfile error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// change password
+exports.changePassword = async (req, res) => {
+  try {
+    console.log("🟢 Change password body:", req.body);
+    const { currentPassword, newPassword } = req.body;
+    const user = await User.findByPk(req.user.id);
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    console.log("🟢 Password match:", isMatch);
+
+    if (!isMatch)
+      return res.status(400).json({ message: "Incorrect current password" });
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+    user.password = hashed;
+    await user.save();
+
+    res.json({ message: "Password updated successfully" });
+  } catch (err) {
+    console.error("🔴 changePassword error:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };
