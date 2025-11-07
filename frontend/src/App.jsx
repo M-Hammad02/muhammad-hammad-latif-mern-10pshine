@@ -16,7 +16,7 @@ export default function App(){
           <main className="flex-1">
             <Routes>
               <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-            </Routes>
+            </Routes> 
           </main>
         </div>
       </Router>
