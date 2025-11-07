@@ -60,7 +60,7 @@ export default function Navbar({ query, setQuery, filterBy, setFilterBy }) {
               >
                 {user.avatar ? (
                   <img
-                    src={`http://localhost:5001${user.avatar}`}
+                    src={`http://localhost:5000${user.avatar}`}
                     alt="avatar"
                     className="w-full h-full object-cover rounded-full"
                     onError={(e) => {
