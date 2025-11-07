@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Layout/Navbar";
 import DashboardPage from "./pages/Dashboard";
+import ProtectedRoute from "./components/Layout/ProtectedRoute";
 
 export default function App(){
   const [query, setQuery] = useState("");
