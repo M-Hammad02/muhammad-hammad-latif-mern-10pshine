@@ -6,8 +6,6 @@ const path = require("path");
 const pinoHttp = require('pino-http');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
-const noteRoutes = require('./routes/notes');
-const folderRoutes = require("./routes/folders");
 const errorHandler = require('./middlewares/errorHandler');
 const logger = pino({ level: process.env.NODE_ENV === 'production' ? 'info' :
 'debug' });
@@ -24,8 +22,6 @@ app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
 // routes
 app.use('/api/auth', authRoutes);
-app.use('/api/notes', noteRoutes);
-app.use("/api/folders", folderRoutes);
 app.get('/', (req, res) => {
   res.send('✅ Server is running fine');
 });
