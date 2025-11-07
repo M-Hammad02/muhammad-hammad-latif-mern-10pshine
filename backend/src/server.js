@@ -1,7 +1,8 @@
 const { app, logger } = require('./app');
 const { sequelize } = require('./models');
+require('./models/associations'); 
 require('dotenv').config();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 async function start() {
 try {
 await sequelize.authenticate();
