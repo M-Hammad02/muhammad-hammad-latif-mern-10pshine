@@ -15,6 +15,7 @@ export default function Navbar({ query, setQuery, filterBy, setFilterBy }) {
     location.pathname.startsWith("/reset-password");
 
   const isProfilePage = location.pathname === "/profile";
+  const isHomePage = location.pathname === "/"; // ✅ added this check
 
   const getInitials = (name = "") => {
     return name
@@ -28,15 +29,22 @@ export default function Navbar({ query, setQuery, filterBy, setFilterBy }) {
   return (
     <header className="flex items-center justify-between p-6 bg-secondary text-primary">
       <div className="flex items-center gap-4">
-        <Link to="/" className="font-extrabold text-4xl">
+        {/* <Link to="/" className="font-extrabold text-4xl">
           NoteFlow
-        </Link>
+        </Link> */}
+        <Link
+  to={user ? "/dashboard" : "/"}
+  className="font-extrabold text-4xl"
+>
+  NoteFlow
+</Link>
       </div>
 
+      {/* ✅ Hide navbar content on auth pages */}
       {!isAuthPage && (
         <div className="flex items-center gap-3">
-          {/* ✅ Only show SearchBar if not on Profile page */}
-          {!isProfilePage && (
+          {/* ✅ Hide SearchBar on Home and Profile pages */}
+          {!isProfilePage && !isHomePage && (
             <SearchBar
               query={query}
               setQuery={setQuery}
@@ -47,13 +55,7 @@ export default function Navbar({ query, setQuery, filterBy, setFilterBy }) {
 
           {user ? (
             <>
-              {!isProfilePage && (
-                <button>
-                  
-                </button>
-              )}
-
-              {/* ✅ Avatar Circle or Initials */}
+              {/* ✅ Avatar or initials */}
               <div
                 className="relative w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg font-bold cursor-pointer overflow-hidden"
                 onClick={() => nav("/profile")}
@@ -84,7 +86,7 @@ export default function Navbar({ query, setQuery, filterBy, setFilterBy }) {
               </button>
             </>
           ) : (
-            <Link to="/login" className="px-3 py-1 bg-white/20 rounded">
+            <Link to="/login" className="px-3 py-1 bg-primary rounded text-black hover:bg-secondary hover:text-primary text-md font-semibold">
               Login
             </Link>
           )}

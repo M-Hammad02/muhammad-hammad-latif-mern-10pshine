@@ -27,7 +27,7 @@ export default function Sidebar({
       if (!token) return alert("Please log in again.");
 
       const res = await axios.post(
-        "http://localhost:5001/api/folders",
+        "http://localhost:5000/api/folders",
         { name },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -53,7 +53,7 @@ export default function Sidebar({
       const token = localStorage.getItem("token");
       if (!token) return alert("Please log in again.");
 
-      await axios.delete(`http://localhost:5001/api/folders/${confirmDialog.id}`, {
+      await axios.delete(`http://localhost:5000/api/folders/${confirmDialog.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

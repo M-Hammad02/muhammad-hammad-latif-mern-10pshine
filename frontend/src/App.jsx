@@ -10,9 +10,12 @@ import EditorPage from "./pages/EditorPage";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import ProfilePage from "./pages/ProfilePage";
-export default function App(){
+import Home from "./pages/Home"; 
+
+export default function App() {
   const [query, setQuery] = useState("");
   const [filterBy, setFilterBy] = useState("all");
+
   return (
     <AuthProvider>
       <Router>
@@ -20,13 +23,17 @@ export default function App(){
           <Navbar query={query} setQuery={setQuery} filterBy={filterBy} setFilterBy={setFilterBy} />
           <main className="flex-1">
             <Routes>
+              {/* ✅ Public routes */}
+              <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-              <Route path="/add" element={<ProtectedRoute><EditorPage /></ProtectedRoute>} />
-              <Route path="/" element={<ProtectedRoute><DashboardPage query={query} setQuery={setQuery} filterBy={filterBy} setFilterBy={setFilterBy} /></ProtectedRoute>} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password/:token" element={<ResetPassword />} />
+
+              {/* ✅ Protected routes */}
+              <Route path="/dashboard" element={<ProtectedRoute><DashboardPage query={query} setQuery={setQuery} filterBy={filterBy} setFilterBy={setFilterBy} /></ProtectedRoute>} />
+              <Route path="/add" element={<ProtectedRoute><EditorPage /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
             </Routes>
           </main>
         </div>
