@@ -7,42 +7,58 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // If already logged in, send straight to dashboard/home
-    if (user) navigate("/", { replace: true });
+    // Redirect logged-in users to dashboard
+    if (user) navigate("/dashboard", { replace: true });
   }, [user, navigate]);
 
+  // ✅ Disable scrollbars (same as Login)
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.margin = "0";
+    return () => {
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sky-50 to-white p-6">
-      <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div className="space-y-6">
-          <h1 className="text-4xl font-extrabold text-slate-800">NoteFlow — fast, private notes</h1>
-          <p className="text-gray-600">
-            Create, organize and secure your notes. Folders, secret notes, file attachments, search & filters,
-            and a rich text editor powered by Quill — all ready to integrate with your MERN backend.
-          </p>
+    <div className="flex h-screen w-screen overflow-hidden bg-primary m-0">
+      {/* LEFT SIDE — TEXT CONTENT */}
+      <div className="w-full md:w-1/2 flex flex-col justify-center p-10 space-y-6">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-slate-800">
+          NoteFlow — fast, private notes
+        </h1>
 
-          <div className="flex gap-3">
-            <Link to="/register" className="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">Get Started</Link>
-            <Link to="/login" className="px-5 py-2 border rounded">Sign in</Link>
-          </div>
+        <p className="text-gray-700 text-lg leading-relaxed">
+          Create, organize and secure your notes. Folders, secret notes, file attachments, 
+          search & filters, and a rich text editor powered by Quill — all integrated with your MERN backend.
+        </p>
 
-          <ul className="text-sm text-gray-600 space-y-2 mt-4">
-            <li>• Create & edit rich-text notes</li>
-            <li>• Organize notes by folders & mark secret notes</li>
-            <li>• Search & filter by title / description</li>
-            <li>• Upload files & user avatar support</li>
-          </ul>
+        <div className="flex gap-4">
+          <Link
+            to="/register"
+            className="px-6 py-2 border-primary border-2 bg-secondary hover:bg-primary text-primary hover:text-secondary rounded-lg shadow-[0_0_10px_rgba(0,0,0,0.3)] font-semibold transition-all duration-300"
+          >
+            Get Started
+          </Link>
+
+          <Link
+            to="/login"
+            className="px-6 py-2 border-2 border-secondary rounded-lg bg-primary hover:bg-secondary text-secondary hover:text-primary shadow-[0_0_10px_rgba(0,0,0,0.3)] font-semibold transition-all duration-300"
+          >
+            Sign In
+          </Link>
         </div>
+      </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="font-semibold mb-3">Quick demo</h3>
-          <div className="text-sm text-gray-600 space-y-3">
-            <p><strong>Login / Register:</strong> Create an account to see your personal notes.</p>
-            <p><strong>Dashboard:</strong> Lists notes with sort (latest/oldest) and folder filtering.</p>
-            <p><strong>Editor:</strong> Rich editor (React-Quill) with attachments and secret-note toggle.</p>
-            <p className="text-xs text-gray-400">Tip: If your backend is running on another port, set `baseURL` in `src/utils/api.js`.</p>
-          </div>
-        </div>
+      {/* RIGHT SIDE — IMAGE */}
+      <div className="hidden md:flex w-1/2 items-center justify-center">
+        <img
+          src="/images/HomePageImage.svg"
+          alt="NoteFlow preview"
+          className="max-w-[80%] rounded-xl object-contain"
+        />
       </div>
     </div>
   );
